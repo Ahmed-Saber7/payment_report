@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Inherit Form View to Modify it -->
+        <record id="account_payment_inherittt" model="ir.ui.view">
+            <field name="name">view_inherit_account_payment_inherit_method_form</field>
+            <field name="model">account.payment</field>
+            <field name="inherit_id" ref="account.view_account_payment_form"/>
+            <field name="arch" type="xml">
+                <!-- position: after|before|replace|attributes|inside -->
+                <xpath expr="//field[@name='journal_id']" position="before">
+                    <field name="check_date"
+                           attrs="{'invisible':[('payment_method','!=','check')],'required':[('payment_method','=','check')]}"/>
+                </xpath>
+            </field>
+        </record>
+        <!-- Inherit account payment report -->
+        <template id="report_account_payment_inherit" inherit_id="account.report_payment_receipt">
+            <xpath expr="//div[@class='row mt64']" position="before">
+                <div class="col-xs-6">
+                    <table class="table"
+                           style="border-spacing:0;margin-bottom:0;height: 40px; width: 120px; border: 2px solid black;">
+                        <tr>
+                            <td>
+                                <div class="col-xs-6" t-if="o.amount">
+                                    <span t-field="o.amount"
+                                          t-options="{'widget': 'monetary', 'display_currency': o.currency_id}"/>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <br/>
+                    <br/>
+                </div>
+                <table class="table" style="width:100%;direction:ltr;">
+                    <thead>
+                        <tr>
+                            <th>
+                                <t class="col-xs-6" t-if="o.payment_date">
+                                    <strong>Payment Date :</strong>
+                                    <span t-field="o.payment_date"/>
+                                </t>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+                <table class="table" style="width:100%;direction:ltr;">
+                    <thead>
+                        <tr>
+                            <th>
+                                <t t-if="o.partner_type">
+                                    <strong>Recieved By :</strong>
+                                    <span t-field="o.partner_id"/>
+                                </t>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+                <table class="table" style="width:100%;direction:ltr;">
+                    <thead>
+                        <tr>
+                            <th>
+                                <strong>The Sum Of EGP :</strong>
+                                <span t-field="o.text_amount"/>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+                <table class="table" style="width:100%;direction:ltr;">
+                    <thead>
+                        <tr>
+                            <th>
+                                <t class="col-xs-6" t-if="o.payment_method">
+                                    <strong>Payment Method :</strong>
+                                    <span t-field="o.payment_method"/>
+                                </t>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+                <table class="table" style="width:100%;direction:ltr;">
+                    <thead>
+                        <tr>
+                            <th>
+                                <t class="col-xs-6" t-if="o.journal_id">
+                                    <strong>Bank :</strong>
+                                    <span t-field="o.journal_id"/>
+                                </t>
+                            </th>
+                            <th>
+                                <t class="col-xs-6" t-if="o.check_num">
+                                    <strong>Cash No :</strong>
+                                    <span t-field="o.check_num"/>
+                                </t>
+                            </th>
+                            <th>
+                                <t class="col-xs-6" t-if="o.check_date">
+                                    <strong>Cash Date :</strong>
+                                    <span t-field="o.check_date"/>
+                                </t>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+                <table class="table" style="width:100%;direction:ltr;">
+                    <thead>
+                        <tr>
+                            <div class="col-xs-6" t-if="o.communication">
+                                <th>
+                                    <strong>Being Towards :</strong>
+                                    <span t-field="o.communication"/>
+                                </th>
+                            </div>
+                        </tr>
+                    </thead>
+                </table>
+            </xpath>
+            <xpath expr="//div[@class='row mt64']" position="replace"></xpath>
+            <xpath expr="//div[@class='row']" position="replace"></xpath>
+            <xpath expr="//div[@class='row mb64']" position="replace"></xpath>
+            <xpath expr="//table[@class='table table-condensed']" position="replace">
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <table style="width:100%;direction:ltr;" class="table table-bordered">
+                    <tr>
+                        <th>يعتمـد</th>
+                        <th>الحسـابات</th>
+                        <th class="text-right">أمينة الخـزينة</th>
+                        <th class="text-right">توقيع المستلم</th>
+                    </tr>
+                    <tr>
+                        <th>Approved</th>
+                        <th>Accounting</th>
+                        <th class="text-right">Treasurer</th>
+                        <th class="text-right">Recieved By</th>
+                    </tr>
+                </table>
+            </xpath>
+        </template>
+    </data>
+</odoo>
